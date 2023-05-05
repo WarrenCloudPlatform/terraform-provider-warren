@@ -1,0 +1,22 @@
+/bin
+/tmp/*
+/dev
+/local
+/test
+/logs
+**/dev
+
+*.html
+.vscode
+.idea
+*.DS_Store
+*~
+
+TODO
+
+# Output of the go coverage tool
+*coverprofile.*
+
+# Virtual go & fuse
+.virtualgo
+.fuse_hidden*
