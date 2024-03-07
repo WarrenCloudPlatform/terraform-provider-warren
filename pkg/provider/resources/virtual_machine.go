@@ -244,7 +244,6 @@ func (r *VirtualMachine) setStateData(ctx context.Context, server *warren.Virtua
 	data.OSVersion = types.StringValue(server.OsVersion)
 	data.PrivateIPv4 = types.StringValue(server.PrivateIPv4)
 	data.PublicIPv6 = types.StringValue(server.PublicIPv6)
-	data.PublicIPv6 = types.StringValue(server.PublicIPv6)
 	data.Status = types.StringValue(server.Status)
 	data.UpdatedAt = types.StringValue(server.UpdatedAt)
 	data.UserID = types.Int64Value(int64(server.UserId))
@@ -381,7 +380,6 @@ func (r *VirtualMachine) Schema(ctx context.Context, req resource.SchemaRequest,
 			},
 			"network_uuid": schema.StringAttribute{
 				MarkdownDescription: "Virtual machine network UUID attached",
-				Computed:            true,
 				Optional:            true,
 			},
 			"os_name": schema.StringAttribute{
