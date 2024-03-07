@@ -39,3 +39,16 @@ on_push_release:
     name: $CI_COMMIT_TAG
     description: |
       # [terraform-provider-warren] ${CI_COMMIT_TAG}
+
+on_push_mirror_to_github:
+  stage: release
+  when: manual
+  rules:
+    - if: "($CI_PIPELINE_SOURCE == 'merge_request_event' || $CI_PIPELINE_SOURCE == 'push') && $CI_COMMIT_TAG =~ /^v/"
+  tags:
+  - docker
+  script: |
+    git remote add github https://${GITHUB_ACCESS_TOKEN}:x-oauth-basic@github.com/warrenio/terraform-provider-warren
+
+    git push github main
+    git push github main --tags
