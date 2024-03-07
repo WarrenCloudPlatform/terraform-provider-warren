@@ -1,0 +1,5 @@
+release:
+  disable: false
+  github:
+      owner: SverikWarren
+      name: terraform-provider-warren
