@@ -50,6 +50,7 @@ on_push_mirror_to_github:
   tags:
   - docker
   script: |
+    git remote remove github 2>/dev/null || true
     git remote add github "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/WarrenCloudPlatform/terraform-provider-warren.git"
     git remote -v
     git branch -a
