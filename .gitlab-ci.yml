@@ -44,8 +44,8 @@ on_push_release:
 on_push_mirror_to_github:
   stage: push_debug
   when: manual
-  rules:
-    - if: "($CI_PIPELINE_SOURCE == 'merge_request_event' || $CI_PIPELINE_SOURCE == 'push') && $CI_COMMIT_TAG =~ /^v/"
+#  rules:
+#    - if: "($CI_PIPELINE_SOURCE == 'merge_request_event' || $CI_PIPELINE_SOURCE == 'push') && $CI_COMMIT_TAG =~ /^v/"
   tags:
   - docker
   script: |
