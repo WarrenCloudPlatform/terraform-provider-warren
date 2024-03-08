@@ -1,7 +1,6 @@
 include: "/.gitlab/ci/*.yml"
 
 stages:
-  - push_debug
   - test
   - release
 
@@ -11,7 +10,6 @@ variables:
 on_push_test:
   stage: test
   image: golang:${GO_VERSION}-alpine
-  when: manual
   rules:
     - if: "$CI_PIPELINE_SOURCE == 'merge_request_event' || $CI_PIPELINE_SOURCE == 'push'"
   parallel:
@@ -43,15 +41,14 @@ on_push_release:
       # [terraform-provider-warren] ${CI_COMMIT_TAG}
 
 on_push_mirror_to_github:
-  stage: push_debug
+  stage: release
   when: manual
-#  rules:
-#    - if: "($CI_PIPELINE_SOURCE == 'merge_request_event' || $CI_PIPELINE_SOURCE == 'push') && $CI_COMMIT_TAG =~ /^v/"
+  rules:
+    - if: "($CI_PIPELINE_SOURCE == 'merge_request_event' || $CI_PIPELINE_SOURCE == 'push') && $CI_COMMIT_TAG =~ /^v/"
   tags:
   - docker
   script: |
     git remote remove github 2>/dev/null || true
     git remote add github "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/WarrenCloudPlatform/terraform-provider-warren.git"
-    git remote -v
-    git branch -a
+
     git push -u github HEAD:main --tags
