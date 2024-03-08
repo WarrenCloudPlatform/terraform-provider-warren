@@ -43,11 +43,11 @@ on_push_release:
 
 on_push_push_forward:
   stage: make_public
-    rules:
-    - if: "($CI_PIPELINE_SOURCE == 'merge_request_event' || $CI_PIPELINE_SOURCE == 'push') && $CI_COMMIT_TAG =~ /^v/"
+  rules:
+    - if: "($CI_PIPELINE_SOURCE == 'merge_request_event' || $CI_PIPELINE_SOURCE == 'push') && $CI_COMMIT_TAG =~ /^v/ && $CI_COMMIT_BRANCH == 'main'"
   tags:
     - docker
   script: |
     git remote remove github || echo 'This is fine, removing the remote just in case'
     git remote add github "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/WarrenCloudPlatform/terraform-provider-warren.git"
-    git push -u github HEAD:shell
+    git push -u github $GIT_COMMIT_TAG
