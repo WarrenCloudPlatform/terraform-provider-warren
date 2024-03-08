@@ -57,7 +57,7 @@ release:
   # If you want to manually examine the release before its live, uncomment this line:
   # draft: true
   github:
-      owner: WarrenCloudPlatform
+      owner: SverikWarren
       name: terraform-provider-warren
 changelog:
-  disable: true
+  skip: true
