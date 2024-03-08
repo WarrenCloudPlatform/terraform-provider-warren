@@ -18,7 +18,7 @@ import (
 	"strings"
 	"time"
 
-    "github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -110,7 +110,7 @@ func (r *VirtualMachine) Create(ctx context.Context, req resource.CreateRequest,
 		cloudInit = strings.ReplaceAll(cloudInit, "\r", "\n")
 
 		if !strings.HasPrefix(cloudInit, "#cloud-config\n") {
-			jsonCloudInit, err := json.Marshal(map[string]interface{}{ "runcmd": strings.Split(cloudInit, "\n\n") })
+			jsonCloudInit, err := json.Marshal(map[string]interface{}{"runcmd": strings.Split(cloudInit, "\n\n")})
 			if nil != err {
 				resp.Diagnostics.AddError("Virtual machine create error", err.Error())
 				return
@@ -244,7 +244,6 @@ func (r *VirtualMachine) setStateData(ctx context.Context, server *warren.Virtua
 	data.OSVersion = types.StringValue(server.OsVersion)
 	data.PrivateIPv4 = types.StringValue(server.PrivateIPv4)
 	data.PublicIPv6 = types.StringValue(server.PublicIPv6)
-	data.PublicIPv6 = types.StringValue(server.PublicIPv6)
 	data.Status = types.StringValue(server.Status)
 	data.UpdatedAt = types.StringValue(server.UpdatedAt)
 	data.UserID = types.Int64Value(int64(server.UserId))
@@ -271,7 +270,7 @@ func (r *VirtualMachine) setStateData(ctx context.Context, server *warren.Virtua
 						"master_uuid": types.StringValue(serverStorageReplica.MasterUuid),
 						"size_in_gb":  types.Int64Value(int64(serverStorageReplica.Size)),
 						"type":        types.StringValue(serverStorageReplica.Type),
-						"uuid":          types.StringValue(serverStorageReplica.Uuid),
+						"uuid":        types.StringValue(serverStorageReplica.Uuid),
 					},
 				),
 			)
@@ -285,19 +284,19 @@ func (r *VirtualMachine) setStateData(ctx context.Context, server *warren.Virtua
 					"created_at": types.StringValue(serverStorage.CreatedAt),
 					"name":       types.StringValue(serverStorage.Name),
 					"primary":    types.BoolValue(serverStorage.Primary),
-					"replica":    types.ListValueMust(
-						types.ObjectType{ AttrTypes: VirtualMachineStorageReplicaType },
+					"replica": types.ListValueMust(
+						types.ObjectType{AttrTypes: VirtualMachineStorageReplicaType},
 						storageReplica,
 					),
 					"size_in_gb": types.Int64Value(int64(serverStorage.Size)),
 					"user_id":    types.Int64Value(int64(serverStorage.UserId)),
-					"uuid":         types.StringValue(serverStorage.Uuid),
+					"uuid":       types.StringValue(serverStorage.Uuid),
 				},
 			),
 		)
 	}
 
-	data.Storage = types.ListValueMust(types.ObjectType{ AttrTypes: VirtualMachineStorageType }, storage)
+	data.Storage = types.ListValueMust(types.ObjectType{AttrTypes: VirtualMachineStorageType}, storage)
 
 	network, _ := apis.GetNetworkFromServerUUID(r.client, server.Uuid)
 	if nil != network {
@@ -317,7 +316,7 @@ func (r *VirtualMachine) Schema(ctx context.Context, req resource.SchemaRequest,
 				MarkdownDescription: "Virtual machine backup value",
 				Computed:            true,
 				Optional:            true,
-				PlanModifiers:       []planmodifier.Bool{
+				PlanModifiers: []planmodifier.Bool{
 					boolplanmodifier.RequiresReplace(),
 				},
 			},
@@ -325,14 +324,14 @@ func (r *VirtualMachine) Schema(ctx context.Context, req resource.SchemaRequest,
 				MarkdownDescription: "Virtual machine billing account ID",
 				Computed:            true,
 				Optional:            true,
-				PlanModifiers:       []planmodifier.Int64{
+				PlanModifiers: []planmodifier.Int64{
 					int64planmodifier.RequiresReplace(),
 				},
 			},
 			"cloud_init": schema.StringAttribute{
 				MarkdownDescription: "Virtual machine cloud init configuration",
 				Optional:            true,
-				PlanModifiers:       []planmodifier.String{
+				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
@@ -347,7 +346,7 @@ func (r *VirtualMachine) Schema(ctx context.Context, req resource.SchemaRequest,
 			"disk_size_in_gb": schema.Int64Attribute{
 				MarkdownDescription: "Virtual machine boot disk size in GB",
 				Required:            true,
-				PlanModifiers:       []planmodifier.Int64{
+				PlanModifiers: []planmodifier.Int64{
 					int64planmodifier.RequiresReplace(),
 				},
 			},
@@ -366,7 +365,7 @@ func (r *VirtualMachine) Schema(ctx context.Context, req resource.SchemaRequest,
 			"memory": schema.Int64Attribute{
 				MarkdownDescription: "Virtual machine memory value in MB",
 				Required:            true,
-				PlanModifiers:       []planmodifier.Int64{
+				PlanModifiers: []planmodifier.Int64{
 					// @TODO add support for update
 					int64planmodifier.RequiresReplace(),
 				},
@@ -374,7 +373,7 @@ func (r *VirtualMachine) Schema(ctx context.Context, req resource.SchemaRequest,
 			"name": schema.StringAttribute{
 				MarkdownDescription: "Virtual machine name",
 				Required:            true,
-				PlanModifiers:       []planmodifier.String{
+				PlanModifiers: []planmodifier.String{
 					// @TODO add support for update
 					stringplanmodifier.RequiresReplace(),
 				},
@@ -387,14 +386,14 @@ func (r *VirtualMachine) Schema(ctx context.Context, req resource.SchemaRequest,
 			"os_name": schema.StringAttribute{
 				MarkdownDescription: "Virtual machine OS image name",
 				Required:            true,
-				PlanModifiers:       []planmodifier.String{
+				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
 			"os_version": schema.StringAttribute{
 				MarkdownDescription: "Virtual machine OS image version",
 				Required:            true,
-				PlanModifiers:       []planmodifier.String{
+				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
@@ -402,7 +401,7 @@ func (r *VirtualMachine) Schema(ctx context.Context, req resource.SchemaRequest,
 				MarkdownDescription: "Virtual machine password for SSH access",
 				Sensitive:           true,
 				Optional:            true,
-				PlanModifiers:       []planmodifier.String{
+				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
@@ -413,7 +412,7 @@ func (r *VirtualMachine) Schema(ctx context.Context, req resource.SchemaRequest,
 			"public_key": schema.StringAttribute{
 				MarkdownDescription: "Virtual machine public key for SSH access",
 				Optional:            true,
-				PlanModifiers:       []planmodifier.String{
+				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
@@ -424,7 +423,7 @@ func (r *VirtualMachine) Schema(ctx context.Context, req resource.SchemaRequest,
 			"reserve_public_ip": schema.BoolAttribute{
 				MarkdownDescription: "Virtual machine public IP should be reserved at creation if set",
 				Optional:            true,
-				PlanModifiers:       []planmodifier.Bool{
+				PlanModifiers: []planmodifier.Bool{
 					// @TODO add support for update
 					boolplanmodifier.RequiresReplace(),
 				},
@@ -436,7 +435,7 @@ func (r *VirtualMachine) Schema(ctx context.Context, req resource.SchemaRequest,
 			"storage": schema.ListNestedAttribute{
 				MarkdownDescription: "Virtual machine storages",
 				Computed:            true,
-				NestedObject:        schema.NestedAttributeObject{
+				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"created_at": schema.StringAttribute{
 							MarkdownDescription: "Virtual machine storage created at date and time",
@@ -453,7 +452,7 @@ func (r *VirtualMachine) Schema(ctx context.Context, req resource.SchemaRequest,
 						"replica": schema.ListNestedAttribute{
 							MarkdownDescription: "Virtual machine storage replicas",
 							Computed:            true,
-							NestedObject:        schema.NestedAttributeObject{
+							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"created_at": schema.StringAttribute{
 										MarkdownDescription: "Virtual machine storage replica created at date and time",
@@ -496,14 +495,14 @@ func (r *VirtualMachine) Schema(ctx context.Context, req resource.SchemaRequest,
 			"source_uuid": schema.StringAttribute{
 				MarkdownDescription: "Virtual machine boot disk source UUID",
 				Optional:            true,
-				PlanModifiers:       []planmodifier.String{
+				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
 			"source_replica": schema.StringAttribute{
 				MarkdownDescription: "Virtual machine boot disk source replica",
 				Optional:            true,
-				PlanModifiers:       []planmodifier.String{
+				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
@@ -519,7 +518,7 @@ func (r *VirtualMachine) Schema(ctx context.Context, req resource.SchemaRequest,
 				MarkdownDescription: "Virtual machine user name for SSH access",
 				Computed:            true,
 				Optional:            true,
-				PlanModifiers:       []planmodifier.String{
+				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 					stringplanmodifier.UseStateForUnknown(),
 				},
@@ -527,7 +526,7 @@ func (r *VirtualMachine) Schema(ctx context.Context, req resource.SchemaRequest,
 			"vcpu": schema.Int64Attribute{
 				MarkdownDescription: "Virtual machine VCPU value",
 				Required:            true,
-				PlanModifiers:       []planmodifier.Int64{
+				PlanModifiers: []planmodifier.Int64{
 					// @TODO add support for update
 					int64planmodifier.RequiresReplace(),
 				},

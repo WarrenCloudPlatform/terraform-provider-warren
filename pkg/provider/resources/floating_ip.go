@@ -227,7 +227,7 @@ func (r *FloatingIP) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequ
 		return
 	}
 
-	if data.AssignedTo.IsNull() || data.AssignedTo.IsUnknown() {
+	if data.AssignedTo.IsNull() {
 		data.NetworkUUID = types.StringValue("")
 	}
 
@@ -344,7 +344,7 @@ func (r *FloatingIP) Schema(ctx context.Context, req resource.SchemaRequest, res
 				Computed:            true,
 			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: "Floating IP size in GB",
+				MarkdownDescription: "Floating IP name",
 				Computed:            true,
 				Optional:            true,
 				PlanModifiers:       []planmodifier.String{
